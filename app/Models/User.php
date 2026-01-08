@@ -2,22 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use Notifiable;
 
     protected $fillable = [
         'name',
         'email',
         'password',
         'role',
-        'status',
+        'departement',
+        'phone',
+        'is_active'
     ];
 
     protected $hidden = [
@@ -27,7 +26,35 @@ class User extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_active' => 'boolean',
     ];
+
+    // Constantes pour les rôles
+    const ROLE_GUEST = 'guest';
+    const ROLE_USER = 'user';
+    const ROLE_TECHNICIAN = 'technician';
+    const ROLE_ADMIN = 'admin';
+
+    // Méthodes de vérification de rôle
+    public function isAdmin(): bool
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    public function isTechnician(): bool
+    {
+        return $this->role === self::ROLE_TECHNICIAN;
+    }
+
+    public function isRegularUser(): bool
+    {
+        return $this->role === self::ROLE_USER;
+    }
+
+    public function isGuest(): bool
+    {
+        return $this->role === self::ROLE_GUEST;
+    }
 
     // Relations
     public function reservations()
@@ -35,39 +62,18 @@ class User extends Authenticatable
         return $this->hasMany(Reservation::class);
     }
 
+    public function managedResources()
+    {
+        return $this->hasMany(Resource::class, 'managed_by');
+    }
+
+    public function approvedReservations()
+    {
+        return $this->hasMany(Reservation::class, 'approved_by');
+    }
+
     public function notifications()
     {
         return $this->hasMany(Notification::class);
-    }
-
-    // Méthodes helper pour les rôles
-    public function isAdmin()
-    {
-        return $this->role === 'admin';
-    }
-
-    public function isManager()
-    {
-        return $this->role === 'manager';
-    }
-
-    public function isUser()
-    {
-        return $this->role === 'user';
-    }
-
-    public function isGuest()
-    {
-        return $this->role === 'guest';
-    }
-
-    public function isActive()
-    {
-        return $this->status === 'active';
-    }
-
-    public function canMakeReservation()
-    {
-        return $this->isActive() && in_array($this->role, ['user', 'manager', 'admin']);
     }
 }

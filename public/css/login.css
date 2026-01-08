@@ -1,0 +1,442 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1428 100%) !important;
+  color: #e0e6ff;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* === CONTAINER & LAYOUT === */
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated background elements */
+.auth-container::before,
+.auth-container::after {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.1;
+}
+
+.auth-container::before {
+  top: -250px;
+  right: -250px;
+  background: radial-gradient(circle, #00d4ff, transparent);
+  animation: float 6s ease-in-out infinite;
+}
+
+.auth-container::after {
+  bottom: -250px;
+  left: -250px;
+  background: radial-gradient(circle, #00ff88, transparent);
+  animation: float 8s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(30px);
+  }
+}
+
+/* === MAIN CARD === */
+.auth-card {
+  background: rgba(15, 20, 40, 0.8);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 16px;
+  padding: 50px 40px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(10px);
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 30px 20px;
+  }
+}
+
+/* === HEADER === */
+.auth-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.datacenter-logo {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  letter-spacing: -1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.datacenter-logo::before {
+  content: "⚙️";
+  display: inline-block;
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.auth-header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #00d4ff, #00ff88);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.auth-header p {
+  color: #a0aace;
+  font-size: 14px;
+}
+
+/* === FORM === */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #b0b8d8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+input,
+select {
+  padding: 12px 16px;
+  background: rgba(30, 40, 70, 0.6);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 8px;
+  color: #e0e6ff;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+input::placeholder {
+  color: #6b7494;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #00d4ff;
+  background: rgba(30, 40, 70, 0.8);
+  box-shadow: 0 0 16px rgba(0, 212, 255, 0.2);
+}
+
+/* === RADIO BUTTONS (for user type selection) === */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: rgba(30, 40, 70, 0.3);
+}
+
+.radio-option:hover {
+  border-color: #00d4ff;
+  background: rgba(0, 212, 255, 0.05);
+}
+
+.radio-option input[type="radio"] {
+  accent-color: #00d4ff;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.radio-option label {
+  flex: 1;
+  margin: 0;
+  cursor: pointer;
+  font-weight: 500;
+  color: #e0e6ff;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.radio-option input[type="radio"]:checked + label {
+  color: #00ff88;
+}
+
+/* === CHECKBOX === */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #a0aace;
+}
+
+.checkbox-group input[type="checkbox"] {
+  accent-color: #00d4ff;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.checkbox-group a {
+  color: #00d4ff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.checkbox-group a:hover {
+  color: #00ff88;
+}
+
+/* === BUTTON === */
+.btn {
+  padding: 14px;
+  background: linear-gradient(135deg, #00d4ff 0%, #00ff88 100%);
+  border: none;
+  border-radius: 8px;
+  color: #0a0e27;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 8px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 212, 255, 0.3);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid rgba(0, 212, 255, 0.4);
+  color: #00d4ff;
+}
+
+.btn-secondary:hover {
+  background: rgba(0, 212, 255, 0.1);
+  border-color: #00d4ff;
+}
+
+/* === DIVIDER === */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+  color: #6b7494;
+  font-size: 12px;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+}
+
+/* === FOOTER TEXT === */
+.auth-footer {
+  text-align: center;
+  font-size: 13px;
+  color: #a0aace;
+  margin-top: 24px;
+}
+
+.auth-footer a {
+  color: #00d4ff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.auth-footer a:hover {
+  color: #00ff88;
+}
+
+/* === TABS (for switching between login and signup) === */
+.auth-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 12px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #a0aace;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tab-btn:hover {
+  color: #00d4ff;
+}
+
+.tab-btn.active {
+  color: #00d4ff;
+  border-bottom-color: #00d4ff;
+}
+
+/* === SIGNUP SPECIFIC === */
+.signup-types {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.signup-type-card {
+  padding: 16px;
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: rgba(30, 40, 70, 0.3);
+}
+
+.signup-type-card:hover {
+  border-color: #00d4ff;
+  background: rgba(0, 212, 255, 0.05);
+}
+
+.signup-type-card input[type="radio"] {
+  display: none;
+}
+
+.signup-type-card input[type="radio"]:checked + .type-label {
+  color: #00ff88;
+}
+
+.signup-type-card input[type="radio"]:checked ~ .type-icon {
+  color: #00d4ff;
+}
+
+.type-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+  transition: color 0.3s ease;
+}
+
+.type-label {
+  font-weight: 600;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.type-description {
+  font-size: 12px;
+  color: #6b7494;
+  margin-top: 4px;
+}
+
+/* === RESPONSIVE ADJUSTMENTS === */
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 20px;
+  }
+
+  .auth-header h1 {
+    font-size: 24px;
+  }
+
+  .datacenter-logo {
+    font-size: 24px;
+  }
+}
+
+/* === LOADING STATE === */
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* === ERROR MESSAGE === */
+.error-message {
+  color: #ff6b6b;
+  font-size: 12px;
+  padding: 8px 12px;
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.2);
+  border-radius: 6px;
+  margin-top: -12px;
+}
+
+/* === SUCCESS MESSAGE === */
+.success-message {
+  color: #00ff88;
+  font-size: 12px;
+  padding: 8px 12px;
+  background: rgba(0, 255, 136, 0.1);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
