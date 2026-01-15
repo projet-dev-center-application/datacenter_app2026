@@ -1,0 +1,107 @@
+
+/* Ajustement de la taille pour l'inscription car il y a plus de champs */
+.register-container {
+    max-width: 450px;
+    padding: 30px 40px;
+}
+
+/* Style du conteneur de sélection de rôle */
+.role-selector-container {
+    text-align: left;
+    margin-bottom: 25px;
+}
+
+.custom-label {
+    display: block;
+    font-size: 0.8rem;
+    color: #00ffcc; /* Couleur cyan pour le rappel technologique */
+    margin-bottom: 8px;
+    margin-left: 2px;
+}
+
+/* Style du menu déroulant pour qu'il ressemble aux inputs */
+/* --- Style pour les boutons Radio --- */
+.role-selection {
+    text-align: left;
+    margin-bottom: 25px;
+}
+
+.radio-title {
+    font-size: 0.85rem;
+    color: #00ffcc;
+    margin-bottom: 12px;
+}
+
+.radio-container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #fff;
+    user-select: none;
+    transition: 0.3s;
+}
+
+/* On cache le bouton radio par défaut */
+.radio-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Création du cercle personnalisé */
+.radio-checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+}
+
+/* Effet au survol */
+.radio-container:hover .radio-checkmark {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: #00ffcc;
+}
+
+/* Style quand le bouton est sélectionné */
+.radio-container input:checked ~ .radio-checkmark {
+    background-color: transparent;
+    border-color: #00ffcc;
+}
+
+/* Le point central du bouton radio sélectionné */
+.radio-checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.radio-container input:checked ~ .radio-checkmark:after {
+    display: block;
+}
+
+.radio-container .radio-checkmark:after {
+    top: 5px;
+    left: 5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #00ffcc;
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.6);
+}
+
+/* Animation d'entrée pour la boîte (optionnel mais très moderne) */
+.login-container {
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

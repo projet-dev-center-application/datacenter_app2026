@@ -11,83 +11,66 @@ use App\Models\User;
 class AuthController extends Controller
 {
     // Afficher le formulaire de login
-    public function showLoginForm()
+    public function showLogin()
     {
         return view('auth.login');
     }
-    
+
     // Traiter le login
     public function login(Request $request)
     {
-        // Validation
         $credentials = $request->validate([
             'email' => 'required|email',
-            'password' => 'required|min:8',
+            'password' => 'required'
         ]);
-        
-        // Tentative d'authentification
+
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            
-            return response()->json([
-                'success' => true,
-                'redirect' => '/dashboard'
-            ]);
+
+            return redirect()->route('dashboard');
         }
-        
-        return response()->json([
-            'success' => false,
-            'message' => 'Identifiants incorrects'
-        ], 401);
+
+        return back()->with('error', 'Email ou mot de passe incorrect');
     }
-    
+
+    // Afficher le formulaire d'inscription
+    public function showRegister()
+    {
+        return view('auth.register');
+    }
+
     // Traiter l'inscription
     public function register(Request $request)
     {
-        // Validation
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
             'phone' => 'nullable|string|max:20',
             'department' => 'required|string|max:50',
             'password' => 'required|min:8|confirmed',
         ]);
-        
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
-        }
-        
-        // Création de l'utilisateur
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'departement' => $request->department,
+            'department' => $request->department, // adapte au nom DB
             'password' => Hash::make($request->password),
-            'role' => 'user', // Par défaut
+            'role' => 'user',
             'is_active' => true,
         ]);
-        
-        // Connecter automatiquement
-        Auth::login($user);
-        
-        return response()->json([
-            'success' => true,
-            'message' => 'Compte créé avec succès',
-            'redirect' => '/dashboard'
-        ]);
+
+
+        return redirect()->route('loading');
     }
-    
+
     // Déconnexion
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        
-        return redirect('/login');
+
+        return redirect()->route('login');
     }
 }
