@@ -80,11 +80,11 @@ p {
 .input-group input:valid ~ label {
     top: -20px;
     font-size: 0.9rem;
-    color: #00ffcc; 
+    color: #2054cc; 
 }
 
 .input-group input:focus {
-    border-bottom: 2px solid #00ffcc;
+    border-bottom: 2px solid #2054cc;
 }
 
 .options {
@@ -95,7 +95,7 @@ p {
 }
 
 .options a {
-    color: #00ffcc;
+    color: #2054cc;
     text-decoration: none;
 }
 
@@ -109,19 +109,19 @@ p {
     padding: 12px;
     border: none;
     border-radius: 25px;
-    background: #00ffcc;
-    color: #011627;
+    background: #2054cc;
+    color: #c9d3da;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: 0.4s;
-    box-shadow: 0 5px 15px rgba(0, 255, 204, 0.3);
+    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.6);
 }
 
 .btn-login:hover {
-    background: #fff;
+    background:black;
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 20px rgba(105, 103, 103, 0.4);
 }
 
 .footer-links {
@@ -130,7 +130,7 @@ p {
 }
 
 .footer-links a {
-    color: #00ffcc;
+    color: #2054cc;
     text-decoration: none;
     font-weight: 500;
 }
