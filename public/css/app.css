@@ -115,7 +115,7 @@ HEADER
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 317px;
+  gap: 275px;
   margin-left: 20px;
 
 }
@@ -183,74 +183,25 @@ HEADER
   font-size: 1rem; /* Gardé tel quel */
   white-space: nowrap;
 }
-.dropdown {
-    position: relative;
-    display: inline-block;
+.user-container{
+   width: 100px;
+    margin-top: 11px;
 }
-
-.dropdown-toggle {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+.user-controls {
+  display: flex;
+  gap: 15px;
+  align-items: center;
 }
-
-.dropdown-arrow {
-    font-size: 0.7em;
-    transition: transform 0.3s ease;
-}
-
-.dropdown:hover .dropdown-arrow {
-    transform: rotate(180deg);
-}
-
-.dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%) translateY(10px);
-    min-width: 220px;
-    background: var(--dark-card);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: var(--radius);
-    padding: 10px 0;
-    box-shadow: var(--shadow-lg);
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    z-index: 1000;
-}
-
-.dropdown:hover .dropdown-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) translateY(0);
-}
-
-.dropdown-menu a {
+.user-icon{
+    width: 30px;
+    height: 30px;
     display: block;
-    padding: 10px 20px;
-    color: #e5eaef;
-    font-size: 0.97rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    border-left: 3px solid transparent;
+    margin-bottom: -7px;
+    margin-left: 25px;
 }
-
-.dropdown-menu a:hover {
-    background: #112c48;
-    color: var(--white);
-    border-left-color: var(--primary);
-    padding-left: 25px;
-}
-
-/* Indicateur visuel pour le menu actif */
-.dropdown:hover > .dropdown-toggle {
-    color: #112c48;
-}
-
-.dropdown:hover > .dropdown-toggle::after {
-    width: 100%;
+.logout-icon{
+    width: 30px;
+    height: 30px;
 }
 /* =========================================
 RESPONSIVE (Mobile & Tablet)
@@ -1218,6 +1169,13 @@ RESPONSIVE
 /* =========================================
 STATS (Visuals)
 ========================================= */
+.stats-section{
+    height: 390px;
+    padding: 33px;
+}
+.center-text{
+    padding-bottom:20px
+}
 .stats-grid {
 display: grid;
 grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -1339,7 +1297,7 @@ display: flex;
 gap: 60px;
 }
 .link-col { display: flex; flex-direction: column; gap: 10px; }
-.link-col h6 { color: var(--white); font-weight: 600; margin-bottom: 5px; }
+.link-col h6 { color: var(--white); font-weight: 600; margin-bottom: 5px;font-size: 1rem;}
 .link-col a:hover { color: var(--primary); }
 .footer-bottom {
 border-top: 1px solid #1e293b;
@@ -1402,6 +1360,8 @@ SECTION TÉMOIGNAGES
 
 .testimonials-section .section-header p {
     color: var(--secondary);
+    padding-bottom: 20px;
+    padding-top: 10px;
 }
 
 .testimonials-grid {
@@ -1655,5 +1615,204 @@ RESPONSIVE TÉMOIGNAGES
     
     .quote-icon {
         display: none;
+    }
+}
+/* =========================================
+   PAGE DE RÉSERVATION
+   ========================================= */
+
+.reservation-page {
+    padding: 60px 0;
+    background-color: var(--light-bg); /* Fond gris clair harmonieux */
+    min-height: 80vh;
+}
+
+.reservation-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* 2/3 formulaire, 1/3 info */
+    gap: 40px;
+    align-items: start;
+}
+
+/* --- Conteneur Formulaire --- */
+.form-container {
+    background: var(--white);
+    padding: 40px;
+    border-radius: var(--radius); /* 8px ou 12px selon ta config */
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+}
+
+.form-header h2 {
+    color: var(--dark-bg);
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+}
+
+.form-header p {
+    color: var(--secondary);
+    margin-bottom: 30px;
+    font-size: 0.95rem;
+}
+
+/* --- Styles des champs (Inputs) --- */
+.booking-form .form-group {
+    margin-bottom: 20px;
+}
+
+.booking-form label {
+    display: block;
+    font-weight: 600;
+    color: #1e293b; /* Couleur sombre pro */
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+/* Icône à l'intérieur de l'input */
+.input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    pointer-events: none; /* Laisse passer le clic */
+}
+
+.booking-form input,
+.booking-form select,
+.booking-form textarea {
+    width: 100%;
+    padding: 12px 15px 12px 45px; /* Padding gauche pour l'icône */
+    border: 1px solid #cbd5e1;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    font-family: inherit;
+    color: #334155;
+    background-color: #f8fafc;
+    transition: all 0.3s ease;
+}
+
+/* Effet Focus (Bleu électrique) */
+.booking-form input:focus,
+.booking-form select:focus,
+.booking-form textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); /* Glow bleu */
+}
+
+/* Zone de texte (sans icône) */
+.booking-form textarea {
+    padding: 15px;
+    resize: vertical;
+}
+
+/* Grille pour les dates */
+.form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* --- Boutons Actions --- */
+.form-actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-outline-secondary {
+    color: var(--secondary);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 20px;
+    border: 1px solid #cbd5e1;
+    border-radius: var(--radius);
+    transition: 0.3s;
+}
+
+.btn-outline-secondary:hover {
+    background: #f1f5f9;
+    color: var(--dark-bg);
+}
+
+/* Réutilisation de ton btn-primary existant, mais plus large */
+.form-actions .btn-primary {
+    padding: 12px 30px;
+    font-size: 1rem;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+}
+
+/* --- Sidebar Info (Droite) --- */
+.info-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.info-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: var(--radius);
+    border: 1px solid #e2e8f0;
+    box-shadow: var(--shadow-sm);
+}
+
+.info-card h3 {
+    font-size: 1.1rem;
+    color: var(--dark-bg);
+    margin-bottom: 15px;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 10px;
+}
+
+.info-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.info-card li {
+    font-size: 0.9rem;
+    color: var(--secondary);
+    margin-bottom: 10px;
+    padding-left: 0;
+}
+
+/* Status dots */
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.dot.green { background-color: var(--success); box-shadow: 0 0 5px var(--success); }
+.dot.orange { background-color: var(--warning); box-shadow: 0 0 5px var(--warning); }
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+    .reservation-layout {
+        grid-template-columns: 1fr; /* Une seule colonne sur tablette/mobile */
+    }
+    
+    .form-grid-2 {
+        grid-template-columns: 1fr; /* Dates l'une sous l'autre */
+    }
+    
+    .info-sidebar {
+        order: -1; /* Mettre les infos au-dessus ou en-dessous selon préférence */
     }
 }

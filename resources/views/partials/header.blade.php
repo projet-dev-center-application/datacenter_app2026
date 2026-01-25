@@ -1,0 +1,71 @@
+<header class="site-header">
+    <div class="container header-container">
+        <div class="logo">
+           <img src="../images/icons8-serveur.gif" alt="datacore_logo" class="logo1">
+            <span>DataCore Manager</span>
+        </div>
+
+        <nav class="main-nav">
+            <ul>
+                <li>
+    <a href="{{ route('home') }}"
+       class="{{ request()->routeIs('home') ? 'active' : '' }}">
+        Accueil
+    </a>
+</li>
+
+<li>
+    <a href="{{ route('resources.index') }}"
+       class="{{ request()->routeIs('resources.*') ? 'active' : '' }}">
+        Ressources
+    </a>
+</li>
+
+<li>
+    <a href="{{ route('reservations.index') }}"
+       class="{{ request()->routeIs('reservations.*') ? 'active' : '' }}">
+        Réservations
+    </a>
+</li>
+
+<li>
+    <a href="#contact"
+       class="{{ request()->is('contact') ? 'active' : '' }}">
+        Contact
+    </a>
+</li>
+
+            </ul>
+        </nav>
+
+       <div class="auth-buttons">
+    @guest
+        <!-- 🔴 CAS 1 : VISITEUR (Non connecté) -->
+        <a href="{{ route('login') }}" class="btn btn-outline">Connexion</a>
+        <a href="{{ route('register') }}" class="btn btn-primary">Inscription</a>
+    @else
+        <!-- 🟢 CAS 2 : UTILISATEUR CONNECTÉ -->
+        <div class="user-controls">
+            <!-- Salutation (Optionnel, peut être masqué sur mobile via CSS) -->
+            <!-- <span class="user-greeting">
+                Bonjour, {{ Auth::user()->name }}
+            </span> -->
+
+            <!-- Bouton Mon Espace (Dashboard) -->
+             <div class="user-container">
+             <img src="../images/user.png" alt="user" class="user-icon">
+            <a href="{{ route('dashboard') }}" class="btn-sm">
+                Mon Espace
+            </a>
+             </div>
+            <form method="POST" action="{{ route('logout') }}" class="logout-form">
+                @csrf
+                <button type="submit" class="btn btn-primary btn-logout" title="Se déconnecter">
+                   Deconnexion
+                </button>
+            </form>
+        </div>
+    @endguest
+</div>
+    </div>
+</header>

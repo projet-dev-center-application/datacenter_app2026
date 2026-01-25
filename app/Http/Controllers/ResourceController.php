@@ -18,7 +18,7 @@ class ResourceController extends Controller
             })
             ->get();
 
-        return view('catalogue', compact('resources'));
+        return view('ressources.catalogue', compact('resources'));
     }
 
     // --- زدت هاد الـ Function باش يخدم زر Voir ---

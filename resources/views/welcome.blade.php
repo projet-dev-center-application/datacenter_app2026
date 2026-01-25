@@ -18,29 +18,66 @@
 
         <nav class="main-nav">
             <ul>
-                <li><a href="#" class="active">Accueil</a></li>
-                 <li class="dropdown">
-                    <a href="#fonctionnalites" class="dropdown-toggle">
-                        Fonctionnalités <span class="dropdown-arrow">▼</span>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="#planification">Planification</a>
-                        <a href="#reservations">Réservations</a>
-                        <a href="#ressources">Ressources</a>
-                        <a href="#paiement">Paiement et Facturation </a>
-                        <a href="#facturation">Facturation</a>
-                    </div>
-                </li>
-                
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+                <li>
+    <a href="{{ route('home') }}"
+       class="{{ request()->routeIs('home') ? 'active' : '' }}">
+        Accueil
+    </a>
+</li>
+
+<li>
+    <a href="{{ route('resources.index') }}"
+       class="{{ request()->routeIs('resources.*') ? 'active' : '' }}">
+        Ressources
+    </a>
+</li>
+
+<li>
+    <a href="{{ route('reservations.create') }}"
+       class="{{ request()->routeIs('reservations.*') ? 'active' : '' }}">
+        Réservations
+    </a>
+</li>
+
+<li>
+    <a href="#contact"
+       class="{{ request()->is('contact') ? 'active' : '' }}">
+        Contact
+    </a>
+</li>
+
             </ul>
         </nav>
 
-        <div class="auth-buttons">
-            <a href="{{ route('login') }}" class="btn btn-outline">Connexion</a>
-            <a href="{{ route('register') }}" class="btn btn-primary">Inscription</a>
+       <div class="auth-buttons">
+    @guest
+        <!-- 🔴 CAS 1 : VISITEUR (Non connecté) -->
+        <a href="{{ route('login') }}" class="btn btn-outline">Connexion</a>
+        <a href="{{ route('register') }}" class="btn btn-primary">Inscription</a>
+    @else
+        <!-- 🟢 CAS 2 : UTILISATEUR CONNECTÉ -->
+        <div class="user-controls">
+            <!-- Salutation (Optionnel, peut être masqué sur mobile via CSS) -->
+            <!-- <span class="user-greeting">
+                Bonjour, {{ Auth::user()->name }}
+            </span> -->
+
+            <!-- Bouton Mon Espace (Dashboard) -->
+             <div class="user-container">
+             <img src="../images/user.png" alt="user" class="user-icon">
+            <a href="{{ route('dashboard') }}" class="btn-sm">
+                Mon Espace
+            </a>
+             </div>
+            <form method="POST" action="{{ route('logout') }}" class="logout-form">
+                @csrf
+                <button type="submit" class="btn btn-primary btn-logout" title="Se déconnecter">
+                   Deconnexion
+                </button>
+            </form>
         </div>
+    @endguest
+</div>
     </div>
 </header>
 
@@ -153,58 +190,6 @@
         </div>
     </div>
 </section>
-<!-- 6️⃣ STATISTIQUES (CSS Charts) -->
-<section id="stats" class="stats-section">
-    <div class="container">
-        <div class="section-header center-text">
-            <h2>Métriques en Temps Réel</h2>
-        </div>
-        
-        <div class="stats-grid">
-            <!-- Bar Chart -->
-            <div class="stat-box">
-                <h4>Occupation CPU</h4>
-                <div class="bar-chart">
-                    <div class="bar-container">
-                        <div class="bar-fill" style="height: 45%;"><span>45%</span></div>
-                        <span class="bar-label">Cluster A</span>
-                    </div>
-                    <div class="bar-container">
-                        <div class="bar-fill danger" style="height: 85%;"><span>85%</span></div>
-                        <span class="bar-label">Cluster B</span>
-                    </div>
-                    <div class="bar-container">
-                        <div class="bar-fill warning" style="height: 60%;"><span>60%</span></div>
-                        <span class="bar-label">Cluster C</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pie Chart Simulation -->
-            <div class="stat-box">
-                <h4>Disponibilité Stockage</h4>
-                <div class="pie-wrapper">
-                    <div class="pie-chart" style="--p:75; --c:#3b82f6;">
-                        <span class="pie-value">75%</span>
-                    </div>
-                    <p class="pie-caption">Espace utilisé</p>
-                </div>
-            </div>
-
-            <!-- KPI Cards -->
-            <div class="stat-kpi-group">
-                <div class="kpi-card">
-                    <span class="kpi-num">142</span>
-                    <span class="kpi-label">Réservations Actives</span>
-                </div>
-                <div class="kpi-card">
-                    <span class="kpi-num">99.9%</span>
-                    <span class="kpi-label">Uptime Service</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 <!-- 6 SECTION TÉMOIGNAGES -->
 <section class="testimonials-section">
     <div class="container">
@@ -313,6 +298,57 @@
         </div>
     </div>
 </section>
+<section id="stats" class="stats-section">
+    <div class="container">
+        <div class="section-header center-text">
+            <h2>Métriques en Temps Réel</h2>
+        </div>
+        
+        <div class="stats-grid">
+            <!-- Bar Chart -->
+            <div class="stat-box">
+                <h4>Occupation CPU</h4>
+                <div class="bar-chart">
+                    <div class="bar-container">
+                        <div class="bar-fill" style="height: 45%;"><span>45%</span></div>
+                        <span class="bar-label">Cluster A</span>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-fill danger" style="height: 85%;"><span>85%</span></div>
+                        <span class="bar-label">Cluster B</span>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-fill warning" style="height: 60%;"><span>60%</span></div>
+                        <span class="bar-label">Cluster C</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pie Chart Simulation -->
+            <div class="stat-box">
+                <h4>Disponibilité Stockage</h4>
+                <div class="pie-wrapper">
+                    <div class="pie-chart" style="--p:75; --c:#3b82f6;">
+                        <span class="pie-value">75%</span>
+                    </div>
+                    <p class="pie-caption">Espace utilisé</p>
+                </div>
+            </div>
+
+            <!-- KPI Cards -->
+            <div class="stat-kpi-group">
+                <div class="kpi-card">
+                    <span class="kpi-num">142</span>
+                    <span class="kpi-label">Réservations Actives</span>
+                </div>
+                <div class="kpi-card">
+                    <span class="kpi-num">99.9%</span>
+                    <span class="kpi-label">Uptime Service</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <!-- 7️⃣ FOOTER -->
 <footer class="site-footer">
     <div class="container">
@@ -342,7 +378,7 @@
         </div>
         <div class="footer-bottom">
             <p>&copy; 2026 DataCore Manager. Tous droits réservés.</p>
-            <p class="academic-note">Projet académique – Laravel & MySQL</p>
+            <p class="academic-note">Projet DataCenter – Laravel & MySQL</p>
         </div>
     </div>
 </footer>

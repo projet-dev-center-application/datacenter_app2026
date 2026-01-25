@@ -40,7 +40,7 @@
             <a href="#">Mot de passe oublié ?</a>
         </div>
 
-        <button type="submit" class="btn-login">S'identifier</button>
+        <button type="submit" class="btn-login">Se Connecter</button>
 
         <div class="footer-links">
             <span>

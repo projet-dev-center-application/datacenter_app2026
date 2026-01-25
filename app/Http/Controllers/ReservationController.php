@@ -41,11 +41,11 @@ class ReservationController extends Controller
     {
         $user = Auth::user();
 
-        if (!$user->canMakeReservation()) {
-            return redirect()->back()->with('error', 'Vous n\'avez pas la permission de faire une réservation.');
-        }
+       if (!auth()->user()->is_active) {
+        return redirect()->route('home')->with('error', 'Votre compte n\'est pas actif.');
+    }
 
-        $resources = Resource::where('statut', 'Disponible')->get();
+        $resources = Resource::where('status', 'available')->get();
         $selectedResource = $resourceId ? Resource::find($resourceId) : null;
 
         return view('reservations.create', compact('resources', 'selectedResource'));
