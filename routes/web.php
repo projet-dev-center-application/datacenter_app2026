@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,9 +31,7 @@ Route::get('/loading', function () {
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth')->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 
 
     // ========================
@@ -61,6 +60,7 @@ Route::get('/dashboard', function () {
     // Managers & Admins
     // ========================
     Route::middleware(['role:manager,admin'])->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/reservations/manage/all', [ReservationController::class, 'manage'])->name('reservations.manage');
         Route::post('/reservations/{id}/approve', [ReservationController::class, 'approve'])->name('reservations.approve');
         Route::post('/reservations/{id}/reject', [ReservationController::class, 'reject'])->name('reservations.reject');

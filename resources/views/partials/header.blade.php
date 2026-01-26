@@ -1,7 +1,7 @@
 <header class="site-header">
     <div class="container header-container">
         <div class="logo">
-           <img src="../images/icons8-serveur.gif" alt="datacore_logo" class="logo1">
+           <img src="{{ asset('images/icons8-serveur.gif') }}" alt="datacore_logo" class="logo1">
             <span>DataCore Manager</span>
         </div>
 
@@ -53,7 +53,7 @@
 
             <!-- Bouton Mon Espace (Dashboard) -->
              <div class="user-container">
-             <img src="../images/user.png" alt="user" class="user-icon">
+             <img src="{{ asset('images/user.png') }}" alt="user" class="user-icon">
             <a href="{{ route('dashboard') }}" class="btn-sm">
                 Mon Espace
             </a>

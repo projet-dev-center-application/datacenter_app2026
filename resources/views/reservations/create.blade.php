@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nouvelle Réservation | DataCore Manager</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <!-- Ajout optionnel pour les icônes du formulaire -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -15,13 +14,39 @@
 
     <section class="reservation-page">
         <div class="container">
-            
             <div class="reservation-layout">
-                
-                <!-- Colonne Gauche : Le Formulaire -->
                 <div class="form-container">
+    <!-- 1. Message de Succès -->
+    @if(session('success'))
+        <div style="background-color: #d1fae5; color: #065f46; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #34d399; display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-check-circle"></i> 
+            <span>{{ session('success') }},veuillez voire plus dans ton dashboard.</span>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div style="background-color: #fee2e2; color: #991b1b; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #f87171; display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-triangle-exclamation"></i> 
+            <span>{{ session('error') }}</span>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div style="background-color: #fef2f2; color: #991b1b; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #fca5a5;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                <i class="fa-solid fa-bug"></i> 
+                <strong>Oups ! Veuillez corriger les erreurs suivantes :</strong>
+            </div>
+            <ul style="margin-left: 30px; list-style-type: disc;">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
                     <div class="form-header">
-                        <h2 style="display: flex; align-items: center;gap:10px"><img src="../images/reservation.png" alt="Réserver une Ressource" style="width: 45px"> Réserver une Ressource</h2>
+                        <h2 style="display: flex; align-items: center;gap:10px">
+                        <img src="{{ asset('images/reservation.png') }}" alt="Réserver une Ressource" style="width: 45px"> Réserver une Ressource</h2>
                         <p>Veuillez remplir les détails ci-dessous pour allouer une ressource.</p>
                     </div>
 
@@ -78,16 +103,16 @@
 
                         <!-- Projet & Priorité -->
                         <div class="form-group">
-                            <label for="project_name">Nom du Projet / Motif</label>
+                            <label for="purpose">Nom du Projet / Motif</label>
                             <div class="input-wrapper">
                                 <i class="fa-solid fa-briefcase input-icon"></i>
-                                <input type="text" name="project_name" id="project_name" placeholder="Ex: Migration Base de données Prod" required>
+                                <input type="text" name="purpose" id="purpose" placeholder="Ex: Migration Base de données Prod" required>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="notes">Notes complémentaires (Optionnel)</label>
-                            <textarea name="notes" id="notes" rows="4" placeholder="Besoin d'une configuration réseau spécifique ? Précisez ici."></textarea>
+                            <label for="justification">Notes complémentaires (Optionnel)</label>
+                            <textarea name="justification" id="justification" rows="4" placeholder="Besoin d'une configuration réseau spécifique ? Précisez ici."></textarea>
                         </div>
 
                         <!-- Actions -->
@@ -126,8 +151,39 @@
         </div>
     </section>
 
-    <!-- On inclut le Footer -->
     @include('partials.footer')
+@if(session('show_success_modal'))
+<div class="modal-overlay" id="successModal">
+    <div class="modal-card">
+        <!-- Animation de l'icône de succès -->
+        <div class="success-checkmark">
+            <div class="check-icon">
+                <span class="icon-line line-tip"></span>
+                <span class="icon-line line-long"></span>
+                <div class="icon-circle"></div>
+                <div class="icon-fix"></div>
+            </div>
+        </div>
 
+        <div class="modal-content">
+            <h3>Félicitations, {{ Auth::user()->name }} !</h3>
+            <p>Votre demande de réservation a été enregistrée avec succès.</p>
+            <p class="sub-text">Un administrateur va examiner votre demande sous peu.</p>
+            
+            <div class="modal-actions">
+                <!-- Bouton pour aller voir la liste -->
+                <a href="{{ route('reservations.index') }}" class="btn btn-primary btn-modal">
+                    Voir mes réservations <i class="fa-solid fa-arrow-right"></i>
+                </a>
+                
+                <!-- Bouton pour fermer et rester ici (Optionnel) -->
+                <button onclick="document.getElementById('successModal').style.display='none'" class="btn btn-text">
+                    Faire une autre demande
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 </body>
 </html>

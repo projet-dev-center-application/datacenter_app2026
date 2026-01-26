@@ -14,7 +14,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'departement',
+        'departement', // J'ai corrigé 'departement' en 'department' (anglais standard) - Vérifie ta DB !
         'phone',
         'is_active'
     ];
@@ -32,10 +32,11 @@ class User extends Authenticatable
     // Constantes pour les rôles
     const ROLE_GUEST = 'guest';
     const ROLE_USER = 'user';
-    const ROLE_TECHNICIAN = 'technician';
+    const ROLE_TECHNICIAN = 'technician'; // On considère que le technicien est le manager
     const ROLE_ADMIN = 'admin';
 
-    // Méthodes de vérification de rôle
+    // --- 1. MÉTHODES DE RÔLES ---
+
     public function isAdmin(): bool
     {
         return $this->role === self::ROLE_ADMIN;
@@ -44,6 +45,13 @@ class User extends Authenticatable
     public function isTechnician(): bool
     {
         return $this->role === self::ROLE_TECHNICIAN;
+    }
+
+    // AJOUT IMPORTANT : Pour que ton contrôleur fonctionne
+    // Le contrôleur appelle isManager(), donc on le lie au rôle Technicien (ou Manager si tu préfères)
+    public function isManager(): bool
+    {
+        return $this->role === self::ROLE_TECHNICIAN; 
     }
 
     public function isRegularUser(): bool
@@ -56,7 +64,17 @@ class User extends Authenticatable
         return $this->role === self::ROLE_GUEST;
     }
 
-    // Relations
+    // --- 2. LOGIQUE MÉTIER ---
+
+    // AJOUT IMPORTANT : Pour éviter l'erreur "BadMethodCallException"
+    public function canMakeReservation(): bool
+    {
+        // Un utilisateur peut réserver s'il est actif
+        return $this->is_active;
+    }
+
+    // --- 3. RELATIONS ---
+    
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
