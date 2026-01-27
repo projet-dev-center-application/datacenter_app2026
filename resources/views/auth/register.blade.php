@@ -27,7 +27,7 @@
         </div>
 
         <div class="input-group">
-            <input type="text" id="dep" name="department" required>
+            <input type="text" id="dep" name="departement" required>
             <label for="dep">Département</label>
         </div>
 

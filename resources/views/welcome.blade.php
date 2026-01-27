@@ -40,8 +40,8 @@
 </li>
 
 <li>
-    <a href="#contact"
-       class="{{ request()->is('contact') ? 'active' : '' }}">
+    <a href="{{ route('contact') }}"
+       class="{{ request()->routeIs('contact') ? 'active' : '' }}">
         Contact
     </a>
 </li>
@@ -51,25 +51,28 @@
 
        <div class="auth-buttons">
     @guest
-        <!-- 🔴 CAS 1 : VISITEUR (Non connecté) -->
+        <!-- CAS 1 : VISITEUR (Non connecté) -->
         <a href="{{ route('login') }}" class="btn btn-outline">Connexion</a>
         <a href="{{ route('register') }}" class="btn btn-primary">Inscription</a>
     @else
-        <!-- 🟢 CAS 2 : UTILISATEUR CONNECTÉ -->
+        <!-- CAS 2 : UTILISATEUR CONNECTÉ -->
         <div class="user-controls">
-            <!-- Salutation (Optionnel, peut être masqué sur mobile via CSS) -->
-            <!-- <span class="user-greeting">
-                Bonjour, {{ Auth::user()->name }}
-            </span> -->
-
-            <!-- Bouton Mon Espace (Dashboard) -->
              <div class="user-container">
-             <img src="../images/user.png" alt="user" class="user-icon">
-            <a href="{{ route('dashboard') }}" class="btn-sm">
-                Mon Espace
-            </a>
+                <img src="{{ asset('images/user.png') }}" alt="user" class="user-icon">
+                
+                @if(Auth::user()->role === 'admin')
+                    <a href="{{ route('dashboard') }}" class="btn-sm">
+                        Mon Espace
+
+                    </a>
+                @else
+                    <a href="{{ route('dashboard') }}" class="btn-sm">
+                        Mon Espace
+                    </a>
+                @endif
              </div>
-            <form method="POST" action="{{ route('logout') }}" class="logout-form">
+             
+            <form method="POST" action="{{ route('logout') }}" class="logout-form" style="display:inline;">
                 @csrf
                 <button type="submit" class="btn btn-primary btn-logout" title="Se déconnecter">
                    Deconnexion
@@ -78,12 +81,10 @@
         </div>
     @endguest
 </div>
-    </div>
 </header>
 
-<!-- 2️⃣ HERO SECTION -->
+<!--  HERO SECTION -->
 <section class="hero-section" style="padding:0">
-    <!-- Particules animées -->
     <div class="hero-particles">
         <div class="particle"></div>
         <div class="particle"></div>
@@ -91,7 +92,6 @@
         <div class="particle"></div>
     </div>
     
-    <!-- Lignes de données -->
     <div class="data-stream"></div>
     <div class="data-stream"></div>
     <div class="data-stream"></div>
@@ -102,12 +102,20 @@
             <h1 class="glow-text">Réservation en un clic | Optimisation en temps réel</h1>
             <p>Automatisez la gestion de vos infrastructures, optimisez les ressources et prenez des décisions éclairées grâce à une vue centralisée et sécurisée.</p>
             <div class="hero-actions">
-                <a href="#resources" class="btn btn-primary btn-lg">Commencer dès Maintenant</a>
-            </div>
+    @auth
+        @if(Auth::user()->role === 'admin')
+            <a href="{{ route('dashboard') }}" class="btn btn-primary btn-lg">Gérer l'Infrastructure</a>
+        @else
+            <a href="{{ route('resources.index') }}" class="btn btn-primary btn-lg">Réserver une Ressource</a>
+        @endif
+    @else
+        <a href="{{ route('register') }}" class="btn btn-primary btn-lg">Commencer dès Maintenant</a>
+    @endauth
+</div>
         </div>
     </div>
 </section>
-<!-- 3️⃣ SECTION À PROPOS DE NOUS -->
+<!--  SECTION À PROPOS DE NOUS -->
 <section class="about-section">
     <div class="container">
         <div class="section-header center-text">
@@ -155,7 +163,7 @@
         
     </div>
 </section>
-<!-- 3️⃣ FONCTIONNALITÉS (Cards) -->
+<!--  FONCTIONNALITÉS (Cards) -->
 <section class="features-section">
     <div class="container">
         <div class="section-header">
@@ -190,7 +198,7 @@
         </div>
     </div>
 </section>
-<!-- 6 SECTION TÉMOIGNAGES -->
+<!--  SECTION TÉMOIGNAGES -->
 <section class="testimonials-section">
     <div class="container">
         <div class="section-header center-text">
@@ -199,7 +207,6 @@
         </div>
         
         <div class="testimonials-grid">
-            <!-- Témoignage 1 -->
             <div class="testimonial-card">
                 <div class="testimonial-header">
                     <div class="client-avatar avatar-1"></div>
@@ -225,7 +232,6 @@
                 </div>
             </div>
             
-            <!-- Témoignage 2 -->
             <div class="testimonial-card">
                 <div class="testimonial-header">
                     <div class="client-avatar avatar-2"></div>
@@ -251,7 +257,6 @@
                 </div>
             </div>
             
-            <!-- Témoignage 3 -->
             <div class="testimonial-card">
                 <div class="testimonial-header">
                     <div class="client-avatar avatar-3"></div>
@@ -278,14 +283,12 @@
             </div>
         </div>
         
-        <!-- Carousel Indicators -->
         <div class="testimonial-indicators">
             <button class="indicator active" data-slide="0"></button>
             <button class="indicator" data-slide="1"></button>
             <button class="indicator" data-slide="2"></button>
         </div>
         
-        <!-- Companies Logos -->
         <div class="companies-section">
             <h4>Ils nous font confiance</h4>
             <div class="companies-logos">
@@ -305,7 +308,6 @@
         </div>
         
         <div class="stats-grid">
-            <!-- Bar Chart -->
             <div class="stat-box">
                 <h4>Occupation CPU</h4>
                 <div class="bar-chart">
@@ -324,7 +326,6 @@
                 </div>
             </div>
 
-            <!-- Pie Chart Simulation -->
             <div class="stat-box">
                 <h4>Disponibilité Stockage</h4>
                 <div class="pie-wrapper">
@@ -335,7 +336,6 @@
                 </div>
             </div>
 
-            <!-- KPI Cards -->
             <div class="stat-kpi-group">
                 <div class="kpi-card">
                     <span class="kpi-num">142</span>
@@ -349,7 +349,7 @@
         </div>
     </div>
 </section>
-<!-- 7️⃣ FOOTER -->
+<!--  FOOTER -->
 <footer class="site-footer">
     <div class="container">
         <div class="footer-top">
@@ -383,29 +383,23 @@
     </div>
 </footer>
 <script>
-// Simple carousel functionality for testimonials
 document.addEventListener('DOMContentLoaded', function() {
     const indicators = document.querySelectorAll('.indicator');
     const testimonialCards = document.querySelectorAll('.testimonial-card');
     
     indicators.forEach(indicator => {
         indicator.addEventListener('click', function() {
-            // Remove active class from all indicators
             indicators.forEach(ind => ind.classList.remove('active'));
-            
-            // Add active class to clicked indicator
             this.classList.add('active');
             
-            // Get slide index
+
             const slideIndex = parseInt(this.getAttribute('data-slide'));
             
-            // Hide all testimonial cards
             testimonialCards.forEach(card => {
                 card.style.display = 'none';
                 card.classList.remove('active');
             });
             
-            // Show selected testimonial card
             if (testimonialCards[slideIndex]) {
                 testimonialCards[slideIndex].style.display = 'block';
                 testimonialCards[slideIndex].classList.add('active');
@@ -413,7 +407,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Auto rotate testimonials every 5 seconds
     let currentSlide = 0;
     setInterval(() => {
         indicators[currentSlide].classList.remove('active');
@@ -430,5 +423,65 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 5000);
 });
 </script>
+ @if(session('registration_success'))
+    <div id="registrationSuccessModal" class="reg-modal-overlay">
+        <div class="reg-modal-card">
+            <div class="reg-modal-icon">
+                <svg viewBox="0 0 24 24" width="40" height="40" stroke="currentColor" stroke-width="3" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <h2>Bienvenue, {{ Auth::user()->name }} !</h2>
+            <p>Votre compte <strong>DataCore Manager</strong> a été créé. Vous pouvez maintenant gérer vos ressources.</p>
+            <button class="reg-modal-btn" onclick="closeRegModal()">Accéder à la plateforme</button>
+        </div>
+    </div>
+
+    <style>
+        .reg-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.95); /* Très sombre pour bien voir le modal */
+            backdrop-filter: blur(8px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 999999; /* Z-index extrêmement élevé */
+            animation: fadeInModal 0.4s ease;
+        }
+        .reg-modal-card {
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            animation: slideUpModal 0.5s ease;
+        }
+        .reg-modal-icon {
+            width: 70px; height: 70px; background: #dcfce7; color: #10b981;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 20px;
+        }
+        .reg-modal-card h2 { color: #0f172a; margin-bottom: 15px; font-size: 1.8rem; }
+        .reg-modal-card p { color: #64748b; margin-bottom: 25px; line-height: 1.6; }
+        .reg-modal-btn {
+            background: #3b82f6; color: white; border: none; padding: 15px 30px;
+            border-radius: 12px; font-weight: 700; cursor: pointer; width: 100%;
+            font-size: 1rem; transition: 0.3s;
+        }
+        .reg-modal-btn:hover { background: #2563eb; transform: scale(1.02); }
+
+        @keyframes fadeInModal { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUpModal { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+
+    <script>
+        function closeRegModal() {
+            document.getElementById('registrationSuccessModal').style.display = 'none';
+        }
+        // Fermer aussi si on clique à côté du card
+        document.getElementById('registrationSuccessModal').addEventListener('click', function(e) {
+            if(e.target === this) closeRegModal();
+        });
+    </script>
+    @endif
 </body>
 </html>

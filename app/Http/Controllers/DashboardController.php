@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Reservation;
+use App\Models\User;
 use App\Models\Resource;
+use App\Models\Reservation;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -13,12 +15,50 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        // 1. Redirection si Admin vers une vue spécifique (si elle existe)
+        // ==========================================
+        // 1. LOGIQUE POUR L'ADMINISTRATEUR
+        // ==========================================
         if ($user->role === 'admin') {
-            return view('admin.index'); 
+            $totalUsers = User::count();
+            $totalResources = Resource::count();
+            $activeReservationsCount = Reservation::where('status', 'approved')->count();
+            $occupationRate = ($totalResources > 0) ? round(($activeReservationsCount / $totalResources) * 100) : 0;
+            $recentUsers = User::latest()->take(5)->get();
+            $resourceStats = Resource::select('type', DB::raw('count(*) as total'))->groupBy('type')->get();
+
+            $chartData = [];
+            for ($i = 6; $i >= 0; $i--) {
+                $date = now()->subDays($i)->format('Y-m-d');
+                $count = Reservation::whereDate('created_at', $date)->count();
+                $chartData[] = [
+                    'day' => now()->subDays($i)->translatedFormat('D'),
+                    'value' => ($totalResources > 0) ? ($count / $totalResources) * 100 : 0
+                ];
+            }
+
+            return view('admin.index', compact('totalUsers', 'totalResources', 'occupationRate', 'recentUsers', 'resourceStats', 'chartData'));
         }
 
-        // 2. Logique pour l'utilisateur normal
+        // ==========================================
+        // 2. LOGIQUE POUR LE MANAGER
+        // ==========================================
+        if ($user->role === 'manager') {
+            $managedResources = Resource::count(); 
+            $pendingDemands = Reservation::where('status', 'pending')->with(['user', 'resource'])->get();
+            
+            $managerStats = [
+                'to_review' => $pendingDemands->count(),
+                'total_managed' => Resource::count(),
+                'active_now' => Reservation::where('status', 'approved')->count()
+            ];
+
+            return view('manager.index', compact('managedResources', 'pendingDemands', 'managerStats'));
+        }
+
+        // ==========================================
+        // 3. LOGIQUE POUR L'UTILISATEUR NORMAL (Par défaut)
+        // ==========================================
+        
         // Suivi des demandes actives
         $activeReservations = Reservation::where('user_id', $user->id)
             ->whereIn('status', ['pending', 'approved', 'active'])
@@ -26,9 +66,8 @@ class DashboardController extends Controller
             ->orderBy('start_date', 'asc')
             ->get();
 
-        // 3. Historique avec filtres
-        $historyQuery = Reservation::where('user_id', $user->id)
-            ->with('resource');
+        // Historique avec filtres
+        $historyQuery = Reservation::where('user_id', $user->id)->with('resource');
 
         if ($request->filled('status')) {
             $historyQuery->where('status', $request->status);
@@ -42,17 +81,16 @@ class DashboardController extends Controller
 
         $history = $historyQuery->orderBy('created_at', 'desc')->paginate(10);
 
-        // 4. Mini-catalogue ressources disponibles
+        // Ressources disponibles pour le catalogue
         $availableResources = Resource::where('status', 'available')->limit(4)->get();
 
-        // 5. Statistiques pour les badges
+        // Stats pour les badges
         $stats = [
             'total' => Reservation::where('user_id', $user->id)->count(),
             'pending' => Reservation::where('user_id', $user->id)->where('status', 'pending')->count(),
             'approved' => Reservation::where('user_id', $user->id)->where('status', 'approved')->count(),
         ];
 
-        // RETOURNE LA VUE DANS LE DOSSIER dashboard FICHIER index.blade.php
         return view('dashboard.index', compact('activeReservations', 'history', 'availableResources', 'stats'));
     }
 }

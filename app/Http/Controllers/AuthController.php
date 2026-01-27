@@ -54,14 +54,16 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'department' => $request->department, // adapte au nom DB
+            'departement' => $request->departement, 
             'password' => Hash::make($request->password),
             'role' => 'user',
             'is_active' => true,
         ]);
 
+        Auth::login($user);
 
-        return redirect()->route('loading');
+
+        return redirect()->route('home')->with('registration_success', true);
     }
 
     // Déconnexion

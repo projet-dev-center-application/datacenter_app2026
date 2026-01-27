@@ -2436,3 +2436,78 @@ RESPONSIVE TÉMOIGNAGES
     .timeline-box { flex-direction: column; gap: 20px; }
     .line-graphic { display: none; }
 }
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.85); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(8px); 
+    animation: fadeIn 0.4s ease;
+}
+
+
+.modal-card {
+    background: white;
+    padding: 40px;
+    border-radius: 24px;
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    transform: translateY(0);
+    animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-icon {
+    width: 80px;
+    height: 80px;
+    background: #dcfce7;
+    color: #10b981;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    margin: 0 auto 20px;
+}
+
+.modal-card h2 {
+    color: #0f172a;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.modal-card p {
+    color: #64748b;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.btn-access {
+    background: #3b82f6;
+    color: white;
+    padding: 14px 28px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 700;
+    display: inline-block;
+    transition: 0.3s;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.btn-access:hover {
+    background: #1e40af;
+    transform: scale(1.02);
+}
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
