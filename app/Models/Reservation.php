@@ -27,6 +27,8 @@ class Reservation extends Model
     protected $casts = [
         'start_date' => 'datetime',
         'end_date' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
     
     // Relation avec le User
@@ -74,5 +76,22 @@ class Reservation extends Model
                 return 'light';
         }
     }
+    public function approve($id) {
+    // 1. On valide la réservation
+    DB::table('reservations')->where('id', $id)->update(['status' => 'approved']);
+    $res = DB::table('reservations')->where('id', $id)->first();
+
+    // 2. ON CRÉE LA NOTIFICATION RÉELLE
+    \App\Models\Notification::create([
+        'user_id' => $res->user_id,
+        'type' => 'reservation',
+        'title' => 'Demande Approuvée ✅',
+        'message' => 'Votre demande pour l\'équipement a été validée.',
+        'is_read' => false,
+        'created_at' => now()
+    ]);
+
+    return back();
+}
 }
 ?>

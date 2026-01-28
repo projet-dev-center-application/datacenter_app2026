@@ -58,6 +58,18 @@
                 Mon Espace
             </a>
              </div>
+             @auth
+    <div class="notification-bell" style="position: relative; margin-right: 20px; display: inline-block;">
+        <a href="{{ route('dashboard') }}" style="color: #64748b; font-size: 1.2rem;">
+            <i class="fa-solid fa-bell"></i>
+            @if(Auth::user()->notifications()->where('is_read', false)->count() > 0)
+                <span style="position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; font-size: 0.6rem; padding: 2px 5px; border-radius: 50%; border: 2px solid white;">
+                    {{ Auth::user()->notifications()->where('is_read', false)->count() }}
+                </span>
+            @endif
+        </a>
+    </div>
+@endauth
             <form method="POST" action="{{ route('logout') }}" class="logout-form">
                 @csrf
                 <button type="submit" class="btn btn-primary btn-logout" title="Se déconnecter">

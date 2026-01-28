@@ -93,4 +93,11 @@ class DashboardController extends Controller
 
         return view('dashboard.index', compact('activeReservations', 'history', 'availableResources', 'stats'));
     }
+    public function markNotificationsRead() {
+    \App\Models\Notification::where('user_id', auth()->id())
+        ->where('is_read', false)
+        ->update(['is_read' => true, 'read_at' => now()]);
+        
+    return back()->with('success', 'Notifications marquées comme lues.');
+}
 }

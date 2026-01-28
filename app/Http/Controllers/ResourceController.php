@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\Resource; 
+use App\Models\Resource; // On utilise uniquement le Model pour plus de cohérence
 
 class ResourceController extends Controller
 {
     public function index(Request $request)
     {
-       
         $search = $request->input('search');
 
         $resources = Resource::query()
@@ -26,50 +24,52 @@ class ResourceController extends Controller
         return view('ressources.catalogue', compact('resources'));
     }
 
-    // --- زدت هاد الـ Function باش يخدم زر Voir ---
+    // --- CORRIGÉ : On utilise findOrFail pour que le JSON soit décodé automatiquement ---
     public function show($id) {
-        $resource = DB::table('resources')->where('id', $id)->first();
+        $resource = Resource::findOrFail($id); 
         return view('show', compact('resource'));
     }
 
     public function store(Request $request)
     {
-        $specifications = json_encode([
-            'cpu' => $request->cpu,
-            'ram' => $request->ram
-        ]);
-
-        DB::table('resources')->insert([
+        // Eloquent gère le json_encode automatiquement grâce au $casts dans le Model
+        Resource::create([
             'name'           => $request->name,
             'type'           => $request->type,
             'status'         => $request->status,
-            'specifications' => $specifications,
+            'specifications' => [
+                'cpu' => $request->cpu,
+                'ram' => $request->ram,
+                'os'  => $request->os ?? 'Linux Ubuntu 22.04'
+            ],
             'location'       => $request->location,
-            'created_at'     => now(),
-            'updated_at'     => now(),
+            'description'    => $request->description,
         ]);
 
-        return redirect('/catalogue')->with('success', 'Ressource ajoutée !');
+        return redirect()->route('resources.index')->with('success', 'Ressource ajoutée !');
     }
 
     public function edit($id) {
-        $resource = DB::table('resources')->where('id', $id)->first();
+        $resource = Resource::findOrFail($id);
         return view('edit', compact('resource'));
     }
 
     public function update(Request $request, $id) {
-        DB::table('resources')->where('id', $id)->update([
+        $resource = Resource::findOrFail($id);
+        
+        $resource->update([
             'name'     => $request->name, 
             'type'     => $request->type,
             'status'   => $request->status, 
-            'location' => $request->location, 
-            'updated_at' => now(),
+            'location' => $request->location,
+            'description' => $request->description,
         ]);
-        return redirect('/catalogue')->with('success', 'Mise à jour réussie !');
+
+        return redirect()->route('resources.index')->with('success', 'Mise à jour réussie !');
     }
 
     public function destroy($id) {
-        DB::table('resources')->where('id', $id)->delete();
-        return redirect('/catalogue')->with('success', 'Ressource supprimée !');
+        Resource::destroy($id);
+        return redirect()->route('resources.index')->with('success', 'Ressource supprimée !');
     }
 }

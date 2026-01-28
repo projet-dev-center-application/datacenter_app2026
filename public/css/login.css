@@ -1,4 +1,3 @@
-
 * {
     margin: 0;
     padding: 0;
@@ -154,4 +153,32 @@ p {
         margin: 20px;
         padding: 30px;
     }
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    text-align: left;
+}
+
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+.alert-danger ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.error-message {
+    color: #f8d7da;
+    font-size: 0.8rem;
+    position: absolute;
+    bottom: -20px;
+    left: 0;
 }

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
 class ContactController extends Controller
 {
     // Afficher la page de contact
@@ -22,9 +21,6 @@ class ContactController extends Controller
             'subject' => 'required|string|max:100',
             'message' => 'required|string',
         ]);
-
-        // Si l'utilisateur est un invité (non connecté), on l'attribue à l'admin (ID 1)
-        // Mais on précise son email dans la description pour pouvoir lui répondre
         $userId = Auth::check() ? Auth::id() : 1; 
         $description = $request->message;
         
@@ -32,7 +28,7 @@ class ContactController extends Controller
             $description .= "\n\n--- Message envoyé par un invité (" . $request->email . ") ---";
         }
 
-        // Insertion dans la table 'issues'
+        
         DB::table('issues')->insert([
             'title'       => $request->subject,
             'description' => $description,

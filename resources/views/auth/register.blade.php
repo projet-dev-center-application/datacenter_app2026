@@ -16,24 +16,47 @@
 
         <h2>Créer un compte</h2>
 
+        {{-- Affichage des erreurs de validation --}}
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="input-group">
-            <input type="text" id="fullname" name="name" required>
+            <input type="text" id="fullname" name="name" value="{{ old('name') }}" required>
             <label for="fullname">Nom complet</label>
+            @error('name')
+                <span class="error-message">{{ $message }}</span>
+            @enderror
         </div>
 
         <div class="input-group">
-            <input type="email" id="email" name="email" required>
+            <input type="email" id="email" name="email" value="{{ old('email') }}" required>
             <label for="email">Email institutionnel</label>
+            @error('email')
+                <span class="error-message">{{ $message }}</span>
+            @enderror
         </div>
 
         <div class="input-group">
-            <input type="text" id="dep" name="departement" required>
+            <input type="text" id="dep" name="departement" value="{{ old('departement') }}" required>
             <label for="dep">Département</label>
+            @error('departement')
+                <span class="error-message">{{ $message }}</span>
+            @enderror
         </div>
 
         <div class="input-group">
             <input type="password" id="password" name="password" required>
             <label for="password">Mot de passe</label>
+            @error('password')
+                <span class="error-message">{{ $message }}</span>
+            @enderror
         </div>
 
         <div class="input-group">
